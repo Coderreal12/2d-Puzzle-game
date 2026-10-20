@@ -32,7 +32,7 @@ public class move : MonoBehaviour
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
         isgrounded = send();
-        Debug.Log(isgrounded);
+        
         Move(x);
         Jump(y, isgrounded);
 
@@ -46,7 +46,7 @@ public class move : MonoBehaviour
 
 
         player.linearVelocity = new Vector2(x * speed, player.linearVelocity.y);
-
+        // VISUALS Setting animation to true or false.
         if (x != 0)
         {
             animation.SetBool("Run", true);
@@ -55,6 +55,19 @@ public class move : MonoBehaviour
         {
             animation.SetBool("Run", false);
         }
+
+        //VISUAL Looking left/ right
+        if (x == 1)
+        {
+            transform.rotation = Quaternion.Euler(0, 0,0);
+        }
+        else if (x == -1)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+
+
+
 
     }
 
