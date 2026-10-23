@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -8,7 +9,9 @@ public class move : MonoBehaviour
     private float x;
     private float y;
 
+    private float First_Speed;
 
+    private float Double_Speed;
 
     [Header("Transforms")]
     [SerializeField] private Transform wall_Jump;
@@ -22,13 +25,24 @@ public class move : MonoBehaviour
 
     [Header("Variabels")]
 
-    [SerializeField] private float jumpCount;
 
-    [SerializeField] private float Wall_Jump_Length;
+    [Header("Floats")]
+
+[SerializeField] private float Wall_Jump_Length;
 
     [SerializeField] private float speed;
 
     [SerializeField] private float Jump_Height;
+
+    [SerializeField] private float jumpCount;
+
+    [SerializeField] private float Y_offset;
+
+    [SerializeField] private float x_offset;
+
+    [SerializeField] private float amountofjumps;
+
+    [Header("Bools")]
 
     [SerializeField] private bool isgrounded;
 
@@ -36,13 +50,11 @@ public class move : MonoBehaviour
 
     [SerializeField] private bool walljump;
 
+    [Header("String")]
+
     [SerializeField] private string[] layermasks;
 
-    [SerializeField] private float Y_offset;
-
-    [SerializeField] private float x_offset;
-
-    [SerializeField] private float amountofjumps;
+    
 
     [SerializeField] private Vector2 offset;
     [Header("Animators")]
@@ -53,33 +65,38 @@ public class move : MonoBehaviour
 
     void Start()
     {
-        
+        First_Speed = speed;
+
+        Double_Speed = speed * 1.25f;
     }
 
    
     void Update()
     {
-//Input from player
-x = Input.GetAxisRaw("Horizontal");
+
+
+        //Input from player
+        x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
 
-        Double_Jump(isgrounded, ref jumpCount, ref walljump);
         
+        Double_Jump(isgrounded, ref jumpCount, ref walljump);
 
+       
+        isgrounded = send();
 
-
-
-
-
-
-
-
-
-            isgrounded = send();
+     
         onplatform = onplat();
+
+        sprint(ref speed);
+
+       
         Move(x);
+
+        
         Jump(y, isgrounded,onplatform);
 
+        sprint(ref speed);
 
 
     }
@@ -177,8 +194,8 @@ x = Input.GetAxisRaw("Horizontal");
         Vector2 pos = new Vector2(wall_Jump.position.x, wall_Jump.position.y);
 
 
-
-        Debug.DrawLine(pos, pos + Vector2.right * Wall_Jump_Length * x);
+        //Right here
+        Debug.DrawLine(pos, pos + Vector2.right * Wall_Jump_Length);
         return temp;
     }
 
@@ -209,6 +226,22 @@ x = Input.GetAxisRaw("Horizontal");
         }
     }
 
+    void sprint(ref float speed)
+    {
+
+
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+
+            speed = Double_Speed;
+
+            
+        }
+        else 
+        {
+            speed = First_Speed;
+        }
+    }
 
 
 

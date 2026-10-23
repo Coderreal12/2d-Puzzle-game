@@ -6,6 +6,8 @@ TagManager:
   tags:
   - KeY
   - Kill
+  - PickUpAble
+  - P
   layers:
   - Default
   - TransparentFX
