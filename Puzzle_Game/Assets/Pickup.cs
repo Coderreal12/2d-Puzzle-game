@@ -18,8 +18,19 @@ public class Pickup : MonoBehaviour
 
     [SerializeField] private float x_offset;
 
+    [Header("PickUp Rigidbodies/Transforms")]
+
+    [SerializeField] private GameObject square;
+
+    [SerializeField] private GameObject Defualt;
+
+    //If havig null trouble serialze;
+    private GameObject Carry;
+
+    private Rigidbody2D cube;
     
-    
+
+
     private float rotation;
     void Update()
     {
@@ -32,10 +43,11 @@ public class Pickup : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(HeadHeight.position, Vector2.right, rotation * 2f);
 
 
-        if (hit.collider != null)
+        if (hit.collider != null && hit.collider.gameObject.CompareTag("P"))
         {
             pickup = hit.collider.gameObject.CompareTag("P");
-            
+            cube = hit.collider.attachedRigidbody;
+            Carry = hit.collider.gameObject;
             PickUp(hit);
             //Debug.Log(hit.collider.gameObject.tag);
         }
@@ -43,7 +55,7 @@ public class Pickup : MonoBehaviour
 
 
 
-        PickUp(hit);
+        
 
        
 
@@ -61,10 +73,21 @@ public class Pickup : MonoBehaviour
         flip(ref flop);
 
         
+        if(flop == true && pickup  == true)
+        {
 
+            Carry.transform.parent = PickupAble.transform;
+            cube.linearVelocity = new Vector2(0, 0);
 
+        }
+        else
+        {
+            //NEXT Create an offset.
+            Carry.transform.parent = Defualt.transform;
+cube.linearVelocity = new Vector2(cube.linearVelocityX, cube.linearVelocityY);
+        }
 
-
+            
 
 
     }
