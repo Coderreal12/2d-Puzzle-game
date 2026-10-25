@@ -1,5 +1,5 @@
 using JetBrains.Annotations;
-
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -50,6 +50,8 @@ public class move : MonoBehaviour
 
     [SerializeField] private bool walljump;
 
+   [SerializeField] private bool dead = false;
+
     [Header("String")]
 
     [SerializeField] private string[] layermasks;
@@ -74,7 +76,7 @@ public class move : MonoBehaviour
     void Update()
     {
 
-
+        
         //Input from player
         x = Input.GetAxisRaw("Horizontal");
         y = Input.GetAxisRaw("Vertical");
@@ -88,15 +90,19 @@ public class move : MonoBehaviour
      
         onplatform = onplat();
 
-        sprint(ref speed);
+        
+sprint(ref speed);
 
-       
+       if(dead == true)
+        {
+            speed = 0;
+        }
         Move(x);
 
         
         Jump(y, isgrounded,onplatform);
 
-        sprint(ref speed);
+       
 
 
     }
@@ -182,7 +188,9 @@ public class move : MonoBehaviour
 
     public void Die()
     {
-        speed = 0;
+        
+        dead = true;
+        
     }
 
     private bool WallJump()
@@ -229,7 +237,10 @@ public class move : MonoBehaviour
     void sprint(ref float speed)
     {
 
-
+        if(dead== true)
+        {
+            speed = 0;
+        }
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
 

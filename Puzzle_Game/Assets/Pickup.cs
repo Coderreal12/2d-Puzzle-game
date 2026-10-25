@@ -1,22 +1,34 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 
 public class Pickup : MonoBehaviour
 {
     [SerializeField] private Transform HeadHeight;
 
-    [SerializeField] private Transform PickupAble;
+    [SerializeField] private Transform Holding;
 
     [SerializeField] private Transform SqaureDefualt;
 
-    [SerializeField] private bool pickup;
-
-    [SerializeField] private bool flop = false;
+    
 
     [SerializeField] private Rigidbody2D player;
 
     [SerializeField] private float x_offset;
+
+
+
+    [Header("Bools")]
+
+
+
+
+    [SerializeField] private bool carrying = false;
+
+
+
+
 
     [Header("PickUp Rigidbodies/Transforms")]
 
@@ -25,9 +37,7 @@ public class Pickup : MonoBehaviour
     [SerializeField] private GameObject Defualt;
 
     //If havig null trouble serialze;
-    private GameObject Carry;
-
-    private Rigidbody2D cube;
+    
     
 
 
@@ -43,18 +53,40 @@ public class Pickup : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(HeadHeight.position, Vector2.right, rotation * 2f);
 
 
-        if (hit.collider != null && hit.collider.gameObject.CompareTag("P"))
+        if (hit.collider != null)
         {
-            pickup = hit.collider.gameObject.CompareTag("P");
-            cube = hit.collider.attachedRigidbody;
-            Carry = hit.collider.gameObject;
-            PickUp(hit);
-            //Debug.Log(hit.collider.gameObject.tag);
+
+
+
+
+
+            if (Input.GetKeyDown(KeyCode.E) && hit.collider.gameObject.CompareTag("P") && carrying == false)
+            {
+               
+                PickUp(hit);
+
+                carrying = true;
+               
+            }
+             
+         
+           
+            
+
+            
         }
+         if (Input.GetKeyDown(KeyCode.R) && carrying == true )
+            {
+                
+                LetGo(hit);
+            carrying = false;
+                
+            }    
+            //plan for later jaxon ----> Use the new bool carrying to create logic within (Pickup) and (LetGo)
 
+            //LetGo(hit);
 
-
-
+            
         
 
        
@@ -69,38 +101,21 @@ public class Pickup : MonoBehaviour
 
     private void PickUp(RaycastHit2D hit)
     {
-        //If it is LOOKING at the box then Flip flop with E, if it is NOT looking at the box then flop always = false;
-        flip(ref flop);
-
-        
-        if(flop == true && pickup  == true)
-        {
-
-            Carry.transform.parent = PickupAble.transform;
-            cube.linearVelocity = new Vector2(0, 0);
-
-        }
-        else
-        {
-            //NEXT Create an offset.
-            Carry.transform.parent = Defualt.transform;
-cube.linearVelocity = new Vector2(cube.linearVelocityX, cube.linearVelocityY);
-        }
-
-            
-
+        square = hit.collider.gameObject;
+        square.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+        square.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(0, 0);
+        square.transform.position = Holding.transform.position;
+        square.transform.SetParent(Holding);
 
     }
-
-
-    private void flip(ref bool flop)
-
+    private void LetGo(RaycastHit2D hit)
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            flop = !flop;
-        }
+        square.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        square.transform.SetParent(SqaureDefualt);
+
     }
+
+  
 
 
     private void Rotate(ref float rotation)
@@ -114,4 +129,12 @@ cube.linearVelocity = new Vector2(cube.linearVelocityX, cube.linearVelocityY);
             rotation = 1;
         }
     }
+
+
+    
+
+
+
+
+    
 }

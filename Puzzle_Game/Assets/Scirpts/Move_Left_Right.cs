@@ -32,7 +32,7 @@ public class Move_Left_Right : MonoBehaviour
     {
         target.position = pointA.position;
 
-        self = gameObject;
+        
     }
     private void Update()
     {

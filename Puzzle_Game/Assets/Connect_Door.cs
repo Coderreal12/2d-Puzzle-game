@@ -4,6 +4,8 @@ using UnityEngine;
 public class Connect_Door : MonoBehaviour
 {
     private bool pressed = false;
+
+    [SerializeField] private string[] colliders;
     
     void Update()
     {
@@ -12,10 +14,17 @@ public class Connect_Door : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-       if (collision.gameObject.CompareTag("Player"))
+
+        foreach (string colliders in colliders)
+        {
+
+if (collision.gameObject.CompareTag(colliders))
             {
             pressed = true;
         } 
+
+        }
+       
     }
 
 
