@@ -4,6 +4,12 @@ I am excited to show you my latest game my 2d puzzle game!
 
 While it looks easy on the surface its hard!
 
+Tutorial
+You start out in the first platform go jump onto the moving platform go to the other side once you are there climb up get the key, go left and then get the box click E to hold the box
+Click R to let go, let it go on top of the button then go in get all 3 boxes stack them, and then use your double wall jump abilities to touch the gold platform and you win! 
+
+
+
 Controlls:
 
 W =  Jump
